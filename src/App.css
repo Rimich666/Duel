@@ -40,3 +40,54 @@
 .read-the-docs {
   color: #888;
 }
+
+.range_block {
+  width: 50vmin;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.filter-range__scale {
+  width: calc(15vmin - 2 * 8px);
+  height: 3px;
+  background-color: #aeaeae;
+  margin: auto 8px auto 8px;
+}
+
+.filter-range__control {
+  height: 20px;
+  width: 15vmin;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.filter-range-toggle {
+  width: 16px;
+  height: 16px;
+  background-color: #333333;
+  border-radius: 50%;
+  -webkit-transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+  transition: 0.3s ease;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 1px;
+}
+
+#canvas {
+  height: 75vmin;
+  aspect-ratio: 2/3;
+}
+
+h4 {
+  height: 20px;
+  margin: auto 0 auto 0;
+  vertical-align: center;
+}

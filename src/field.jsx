@@ -1,10 +1,10 @@
+import {useRef} from 'react';
+
 export default function Field() {
+  const width = useRef(window.innerWidth);
+  const height = useRef(window.innerHeight);
+
   return (
-    <div>
-      <div>
-        <button type="button">Start</button>
-      </div>
-      <canvas id="canvas" width="400" height="600"></canvas>
-    </div>
+    <canvas id="canvas" height={Math.min(width.current, height.current) / 4 * 3} width={Math.min(width.current, height.current) / 2}></canvas>
   );
 }

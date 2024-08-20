@@ -1,9 +1,13 @@
 import './App.css'
-import Field from "./field.jsx";
+import Field from './field.jsx';
+import SettingBlock from './setting-block.jsx';
 
 function App() {
   return (
-    <Field/>
+    <>
+      <SettingBlock/>
+      <Field/>
+    </>
   )
 }
 
