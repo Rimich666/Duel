@@ -25,9 +25,9 @@ export function ControlBar({wizard, type}) {
 
   const mouseMoveHandle = (evt) => {
     if (isDown) {
-      const x = evt.clientX - evt.currentTarget.getBoundingClientRect().left - Options.BUTTON_SIZE / 2;
+      const x = getX(evt.clientX - evt.currentTarget.getBoundingClientRect().left - Options.BUTTON_SIZE / 2);
       setCurrentValue(Math.round(((x) / (widthBar) * (max - min)) + min));
-      setLeft(getX(x));
+      setLeft(x);
     }
   }
   const mouseDownHandle = () => {

@@ -16,25 +16,30 @@ function render() {
   canvasContext.closePath();
 
   wizards.forEach((wizard) => {
-    wizard.canvas = canvas;
     wizard.render(canvasContext);
+    wizard.renderSpells(canvasContext);
   })
 }
 
 
 export function renderLoop() {
   const reqAnimationId = requestAnimationFrame(() => {
-     render();
-    // renderLoop()
+    render();
+    renderLoop()
   });
 }
 
-function loop() {
-    setTimeout(() => {
-        player = solution(player, platforms, audioContext, analyser);
-        if (player.y > 0) {
-            loop();
-        }
-    }, 5);
+let count = 0;
+
+export function loop() {
+ setTimeout(() => {
+    wizards.forEach((wizard) => {
+      wizard.move();
+    });
+    wizards.forEach((wizard) => {
+      wizard.moveSpells(wizards[(wizard.index - 1) * (-1)]);
+    });
+    loop();
+  }, 40);
 }
 

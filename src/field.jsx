@@ -5,6 +5,6 @@ export default function Field() {
   const height = useRef(window.innerHeight);
 
   return (
-    <canvas id="canvas" height={Math.min(width.current, height.current) / 4 * 3} width={Math.min(width.current, height.current) / 2}></canvas>
+    <canvas id={"canvas"} height={Math.min(width.current, height.current) / 4 * 3} width={Math.min(width.current, height.current) / 2}></canvas>
   );
 }
