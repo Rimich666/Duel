@@ -1,45 +1,47 @@
-import {wizards} from './main.jsx';
+export class Duel {
+  constructor(canvas, wizards) {
+    this._wizards = wizards;
+    this._context = canvas.getContext('2d');
+    this._width = canvas.clientWidth;
+    this._height = canvas.clientHeight;
+  }
+  _render() {
 
-function render() {
-  const canvas = document.getElementById("canvas");
-  const canvasContext = canvas.getContext("2d");
+    // background
+    this._context.beginPath();
+    this._context.fillStyle = '#aeaeae';
+    this._context.rect(0, 0, this._width, this._height);
+    this._context.fill();
+    this._context.closePath();
 
-  const CANVAS_WIDTH = canvas.clientWidth;
-  const CANVAS_HEIGHT = canvas.clientHeight;
-
-
-  // background
-  canvasContext.beginPath();
-  canvasContext.fillStyle = '#aeaeae';
-  canvasContext.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  canvasContext.fill();
-  canvasContext.closePath();
-
-  wizards.forEach((wizard) => {
-    wizard.render(canvasContext);
-    wizard.renderSpells(canvasContext);
-  })
-}
+    this._wizards.forEach((wizard) => {
+      wizard.render(this._context);
+      wizard.renderSpells(this._context);
+    })
+  }
 
 
-export function renderLoop() {
-  const reqAnimationId = requestAnimationFrame(() => {
-    render();
-    renderLoop()
-  });
-}
-
-let count = 0;
-
-export function loop() {
- setTimeout(() => {
-    wizards.forEach((wizard) => {
-      wizard.move();
+  _renderLoop() {
+    const reqAnimationId = requestAnimationFrame(() => {
+      this._render();
+      this._renderLoop()
     });
-    wizards.forEach((wizard) => {
-      wizard.moveSpells(wizards[(wizard.index - 1) * (-1)]);
-    });
-    loop();
-  }, 40);
-}
+  }
 
+  _loop() {
+    setTimeout(() => {
+      this._wizards.forEach((wizard) => {
+        wizard.move();
+      });
+      this._wizards.forEach((wizard) => {
+        wizard.moveSpells(this._wizards[(wizard.index - 1) * (-1)]);
+      });
+      this._loop();
+    }, 40);
+  }
+  start() {
+    console.log('Старт дуэль');
+    this._loop();
+    this._renderLoop();
+  }
+}

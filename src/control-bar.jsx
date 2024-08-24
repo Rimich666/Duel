@@ -1,4 +1,5 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import {title} from "./main.jsx";
 
 export function ControlBar({wizard, type}) {
   const {min, max} = wizard.range[type];
@@ -6,28 +7,37 @@ export function ControlBar({wizard, type}) {
   const [left, setLeft] = useState(0);
   const [currentValue, setCurrentValue] = useState(min);
   const button = useRef(null);
-  const width = useRef(window.innerWidth);
-  const height = useRef(window.innerHeight);
-  const Options = {
-    DEFAULT_SCALE_WIDTH:  Math.min(width.current, height.current) / 20 * 3 - 16,
-    BUTTON_SIZE: 16,
-  };
-  const [widthBar] = useState(Options.DEFAULT_SCALE_WIDTH);
+  const scale = useRef(null);
+  const control = useRef(null);
+  const [lengthBar, setLengthBar] = useState(0);
+  const [controlPoints, setControlPoints] = useState({
+    left: 0,
+    delta: 0,
+    scale0: 0
+  });
+
+  useEffect(() => {
+    setLengthBar(scale.current.offsetHeight);
+    controlPoints.scale0 = scale.current.getBoundingClientRect().bottom;
+    controlPoints.delta = control.current.getBoundingClientRect().bottom - (controlPoints.scale0 + button.current.offsetHeight / 2);
+    setLeft(controlPoints.delta);
+  }, []);
+
   const getX = (x) => {
     if (x < 0) {
       return 0;
     }
-    if (x > widthBar) {
-      return widthBar;
+    if (x > lengthBar) {
+      return lengthBar;
     }
     return x;
   };
 
   const mouseMoveHandle = (evt) => {
     if (isDown) {
-      const x = getX(evt.clientX - evt.currentTarget.getBoundingClientRect().left - Options.BUTTON_SIZE / 2);
-      setCurrentValue(Math.round(((x) / (widthBar) * (max - min)) + min));
-      setLeft(x);
+      const x = getX(controlPoints.scale0 - evt.clientY);
+      setCurrentValue(Math.round(((x) / (lengthBar) * (max - min)) + min));
+      setLeft(x + controlPoints.delta);
     }
   }
   const mouseDownHandle = () => {
@@ -51,12 +61,19 @@ export function ControlBar({wizard, type}) {
   };
 
   return(
-    <div className={`filter-range__control`} onMouseMove={mouseMoveHandle} onMouseUp={mouseUpHandle} onMouseLeave={mouseLeaveHandle}>
-      <div className={`filter-range__scale`} style={{backgroundColor: wizard.color}}>
+    <div
+      className={`range_control`}
+      onMouseMove={mouseMoveHandle}
+      onMouseUp={mouseUpHandle}
+      onMouseLeave={mouseLeaveHandle}
+      ref={control}
+    >
+      <div className={`range_scale`} ref={scale}>
       </div>
-        <button className={`filter-range-toggle`} ref={button}
-                style={{left: `${left}px`, backgroundColor: wizard.color}}
+        <button className={`range_toggle`} ref={button}
+                style={{bottom: `${left}px`, backgroundColor: wizard.color}}
                 onMouseDown={mouseDownHandle}
+                title={`${title[type]} ${currentValue}`}
         />
     </div>
   );

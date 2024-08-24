@@ -15,7 +15,6 @@ export class Wizard {
 
   _addSpell() {
     const timeout = this._f ? PERIOD_SHOOTING * 1000 / this._f : 0;
-    console.log(!!this._f, timeout);
     if (timeout > 0) {
       setTimeout(() => {
         this._spells.push(new Spell(this._x, this._y, Math.floor(this._r / 4), this._spellColor, this._index, this._width));
@@ -79,7 +78,6 @@ export class Wizard {
 
   renderSpells(context) {
     this._spells.forEach((spell) => {
-      console.log(spell);
       spell.render(context);
     })
   }
