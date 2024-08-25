@@ -11,6 +11,11 @@ export class Wizard {
     this._direction = -1;
     this._spells = [];
     this._spellColor = this._color;
+    this._cursor = {
+      position: 0,
+      delta: 0
+    }
+    this._isInto = false;
   }
 
   _addSpell() {
@@ -21,6 +26,10 @@ export class Wizard {
         this._addSpell();
       }, timeout);
     }
+  }
+
+  _xIsIn(x) {
+    return !(x > this._x + this._r || x< this._x - this._r);
   }
 
   get range() {
@@ -68,6 +77,16 @@ export class Wizard {
     this._y = this._height - this._r;
   }
 
+  set cursor ({x, y}) {
+    if ((x + y) === 0  || !this._xIsIn(x)) {
+      this._cursor.delta = 0;
+      this._cursor.position = 0;
+      return;
+    }
+    this._cursor.position = y;
+    this._cursor.delta = Math.sqrt(this._r ** 2 - (this._x - x) ** 2);
+  }
+
   render(context) {
     context.beginPath();
     context.fillStyle = this._color;
@@ -94,6 +113,17 @@ export class Wizard {
     return y + this._r >= this._height;
   }
 
+  _getCursor() {
+    return this._cursor.position - this._cursor.delta * this._direction;
+  }
+
+  _cursorIsForward(position) {
+    const realPosition = position * this._direction;
+    const cursor = this._getCursor() * this._direction;
+    const current = this._y * this._direction;
+    return realPosition >= cursor && current < cursor;
+  }
+
   _getNewPosition() {
     const position = this._y + this._direction * this._v;
     if ((position + this._r * this._direction) < 0) {
@@ -102,6 +132,15 @@ export class Wizard {
     if ((position + this._r * this._direction) > this._height) {
       return this._height - this._r;
     }
+
+    if (this._cursor.position > 0) {
+      console.log('position', this._cursor.position, this._color, position);
+      if (this._cursorIsForward(position)) {
+        this._isInto = true;
+        return this._getCursor();
+      }
+    }
+
     return position;
   }
 
@@ -120,5 +159,9 @@ export class Wizard {
       this._direction = -1;
     }
     this._y = this._getNewPosition();
+    if (this._isInto) {
+      this._direction = this._direction * (-1);
+      this._isInto = false;
+    }
   }
 }
