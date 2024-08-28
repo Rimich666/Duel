@@ -1,3 +1,5 @@
+import counter from './counter.js';
+
 export class Duel {
   constructor(canvas, wizards) {
     this._wizards = wizards;
@@ -34,7 +36,11 @@ export class Duel {
         wizard.move();
       });
       this._wizards.forEach((wizard) => {
-        wizard.moveSpells(this._wizards[(wizard.index - 1) * (-1)]);
+        const hits = wizard.moveSpells(this._wizards[(wizard.index - 1) * (-1)]);
+        if (hits > 0) {
+          counter.add(wizard.index, hits);
+        }
+
       });
       this._loop();
     }, 40);

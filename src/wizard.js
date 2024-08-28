@@ -134,7 +134,6 @@ export class Wizard {
     }
 
     if (this._cursor.position > 0) {
-      console.log('position', this._cursor.position, this._color, position);
       if (this._cursorIsForward(position)) {
         this._isInto = true;
         return this._getCursor();
@@ -149,6 +148,7 @@ export class Wizard {
     this._spells.forEach((spell) => {
       spell.move(enemy);
     })
+    return this._spells.filter((spell) => spell.isHit).length;
   }
 
   move() {
@@ -163,5 +163,12 @@ export class Wizard {
       this._direction = this._direction * (-1);
       this._isInto = false;
     }
+  }
+
+  clickHandle({x, y}) {
+    if(((this._x - x) ** 2 + (this._y - y) ** 2)> this._r ** 2) {
+      return;
+    }
+
   }
 }

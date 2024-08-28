@@ -1,10 +1,14 @@
-import {forwardRef, useEffect, useRef} from 'react';
+import {forwardRef} from 'react';
+import ColorPicker from "./color-picker.jsx";
 
 export const Field = forwardRef(function Field(props, ref) {
   return (
-    <canvas
-      ref={ref}
-      id={"canvas"}
-    />
+    <div className={'field'}>
+      <ColorPicker/>
+      <canvas
+        ref={ref}
+        id={"canvas"}
+      />
+    </div>
   );
 })

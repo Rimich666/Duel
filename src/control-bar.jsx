@@ -61,7 +61,7 @@ export function ControlBar({wizard, type}) {
   };
 
   return(
-    <div
+    <aside
       className={`range_control`}
       onMouseMove={mouseMoveHandle}
       onMouseUp={mouseUpHandle}
@@ -75,6 +75,6 @@ export function ControlBar({wizard, type}) {
                 onMouseDown={mouseDownHandle}
                 title={`${title[type]} ${currentValue}`}
         />
-    </div>
+    </aside>
   );
 }

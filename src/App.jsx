@@ -4,6 +4,8 @@ import {useEffect, useRef, useState} from "react";
 import {Field} from "./field.jsx";
 import {Wizard} from "./wizard.js";
 import {Duel} from "./duel.js";
+import Tableau from "./tableau.jsx";
+import ColorPicker from "./color-picker.jsx";
 
 function App() {
   const canvas = useRef(null);
@@ -20,8 +22,10 @@ function App() {
     })
   }
 
-  const clickHandle = () => {
-    console.log('Click');
+  const clickHandle = (evt, coordinates) => {
+    wizards.forEach((wizard) => {
+      wizard.clickHandle({x: evt.clientX - coordinates.x, y: evt.y - coordinates.y});
+    })
   };
 
   useEffect(() => {
@@ -41,9 +45,15 @@ function App() {
     new Duel(canvas.current, wizards).start();
   })
   return (
-    <main className={'container'}>
-      <SettingBlock wizards={wizards}/>
-      <Field ref={canvas}/>
+    <main>
+      <section className={'container'}>
+        <Tableau/>
+      </section>
+      <section className={'container'}>
+        <SettingBlock wizards={wizards}/>
+        <Field ref={canvas}/>
+      </section>
+
     </main>
   )
 }
