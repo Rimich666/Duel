@@ -6,6 +6,7 @@ import {Wizard} from "./wizard.js";
 import {Duel} from "./duel.js";
 import Tableau from "./tableau.jsx";
 import ColorPicker from "./color-picker.jsx";
+import colorist from "./colorist.js";
 
 function App() {
   const canvas = useRef(null);
@@ -23,6 +24,7 @@ function App() {
   }
 
   const clickHandle = (evt, coordinates) => {
+    colorist.reset();
     wizards.forEach((wizard) => {
       wizard.clickHandle({x: evt.clientX - coordinates.x, y: evt.y - coordinates.y});
     })

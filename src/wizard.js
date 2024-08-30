@@ -1,10 +1,11 @@
-import {PERIOD_SHOOTING, WIZARD_RADIUS} from './main.jsx';
+import {PERIOD_SHOOTING, WIZARD_COLORS, WIZARD_RADIUS} from './main.jsx';
 import {Spell} from "../spell.js";
+import colorist from "./colorist.js";
 
 export class Wizard {
   _r = WIZARD_RADIUS;
   _v = 0;
-  _colors = ['#fe0000', '#005cff'];
+  _colors = WIZARD_COLORS;
   constructor(index) {
     this._index = index;
     this._color = this._colors[this._index];
@@ -16,12 +17,19 @@ export class Wizard {
       delta: 0
     }
     this._isInto = false;
+    this._timerId = null;
   }
 
   _addSpell() {
     const timeout = this._f ? PERIOD_SHOOTING * 1000 / this._f : 0;
+    this._time = new Date();
+
+    if (this._timerId) {
+      clearTimeout(this._timerId);
+    }
+
     if (timeout > 0) {
-      setTimeout(() => {
+      this._timerId = setTimeout(() => {
         this._spells.push(new Spell(this._x, this._y, Math.floor(this._r / 4), this._spellColor, this._index, this._width));
         this._addSpell();
       }, timeout);
@@ -67,6 +75,7 @@ export class Wizard {
 
   set frequency(frequency) {
     this._f = frequency;
+    this._time = new Date();
     this._addSpell();
   }
 
@@ -103,6 +112,14 @@ export class Wizard {
 
   get index() {
     return this._index;
+  }
+
+  get spellColor() {
+    return this._spellColor;
+  }
+
+  set spellColor(color) {
+    this._spellColor = color;
   }
 
   _isTop(y) {
@@ -169,6 +186,6 @@ export class Wizard {
     if(((this._x - x) ** 2 + (this._y - y) ** 2)> this._r ** 2) {
       return;
     }
-
+    colorist.onClick(this);
   }
 }

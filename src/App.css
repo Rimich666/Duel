@@ -115,7 +115,7 @@
 
 .tab {
   background-color: #121111;
-  color: #05fa19;
+  color: #00ff50;
   height: 100%;
   aspect-ratio: 3/4;
   font-size: 3vmin;
@@ -139,12 +139,15 @@ h4 {
 }
 
 .picker {
-  height: 30vmin;
-  aspect-ratio: 1/1;
-  min-height: 100px;
-  border: #05fa19 1px solid;
-  position: absolute;
-  left: 0;
-  top: 0;
+  /*height: 30vmin;*/
+  /*aspect-ratio: 1/1;*/
+  /*min-height: 100px;*/
+  /*border: #090004 1px solid;*/
+  /*position: absolute;*/
+  /*left: 0;*/
+  /*top: 0;*/
+}
+
+.picker_none {
   display: none;
 }

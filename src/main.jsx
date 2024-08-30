@@ -7,6 +7,7 @@ export const WIZARD_RADIUS = 20;
 export const PERIOD_SHOOTING = 10;
 
 export const SPELL_SPEED = 20;
+export const WIZARD_COLORS = ['#fe0000', '#005cff'];
 
 export const title = {
   speed: 'Скорость:',

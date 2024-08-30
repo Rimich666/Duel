@@ -51,7 +51,6 @@ export class Spell {
     if (this._getIsHit(enemy, position)) {
       this._isAlive = false;
       this._isHit = true;
-      console.log('hit');
       return enemy.x - Math.sqrt((enemy.r + this._r)**2 - (enemy.y - this._y)**2) * this._direction;
     }
     return position;

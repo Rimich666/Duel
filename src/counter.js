@@ -10,7 +10,12 @@ const counter = {
     return () => subscribers.delete(callback);
   },
   add(index, number) {
-    count[index] = count[index] + number;
+    const newCount = count[index] + number;
+    if (newCount > 99999) {
+      count = [0, 0];
+    } else {
+      count[index] = count[index] + number;
+    }
     subscribers.forEach((callback) => callback());
   },
 };
