@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import {Wizard} from "./wizard.js";
+import {Duel} from "./duel.js";
 
 export const WIZARD_RADIUS = 20;
 export const PERIOD_SHOOTING = 10;
@@ -15,6 +17,8 @@ export const title = {
 }
 
 const root = createRoot(document.getElementById('root'));
+// export const wizards = Array(2).fill(null).map((_, index) => new Wizard(index));
+// export const duel = new Duel(wizards);
 
 root.render(
   <StrictMode>

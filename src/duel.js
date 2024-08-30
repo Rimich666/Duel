@@ -45,6 +45,7 @@ export class Duel {
       this._loop();
     }, 40);
   }
+
   start() {
     console.log('Старт дуэль');
     this._loop();

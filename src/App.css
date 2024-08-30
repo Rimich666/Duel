@@ -89,9 +89,6 @@
   height: 5%;
   background-color: #333333;
   border-radius: 15%;
-  -webkit-transition: 0.3s ease;
-  -o-transition: 0.3s ease;
-  transition: 0.3s ease;
   border: none;
   cursor: pointer;
   position: absolute;

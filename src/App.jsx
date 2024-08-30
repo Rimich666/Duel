@@ -1,19 +1,28 @@
 import './App.css'
 import SettingBlock from './setting-block.jsx';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState, useSyncExternalStore} from "react";
 import {Field} from "./field.jsx";
-import {Wizard} from "./wizard.js";
 import {Duel} from "./duel.js";
 import Tableau from "./tableau.jsx";
-import ColorPicker from "./color-picker.jsx";
 import colorist from "./colorist.js";
+import {Wizard} from "./wizard.js";
 
 function App() {
   const canvas = useRef(null);
   const wizards = Array(2).fill(null).map((_, index) => new Wizard(index));
-  const mouseMoveHandle = (evt, coordinates) => {
+
+  const clickHandle = (evt) => {
+    colorist.reset();
+    const rect = canvas.current.getBoundingClientRect();
     wizards.forEach((wizard) => {
-      wizard.cursor = {x: evt.clientX - coordinates.x, y: evt.y - coordinates.y};
+      wizard.clickHandle({x: evt.clientX - rect.x, y: evt.y - rect.y, width: rect.width});
+    })
+  };
+
+  const mouseMoveHandle = (evt) => {
+    const rect = canvas.current.getBoundingClientRect();
+    wizards.forEach((wizard) => {
+      wizard.cursor = {x: evt.clientX - rect.x, y: evt.y - rect.y, ratio: rect.width};
     })
   };
 
@@ -23,16 +32,8 @@ function App() {
     })
   }
 
-  const clickHandle = (evt, coordinates) => {
-    colorist.reset();
-    wizards.forEach((wizard) => {
-      wizard.clickHandle({x: evt.clientX - coordinates.x, y: evt.y - coordinates.y});
-    })
-  };
-
   useEffect(() => {
     const rect = canvas.current.getBoundingClientRect();
-    const coordinates = {x: rect.x, y: rect.y};
     canvas.current.height = rect.height;
     canvas.current.width = rect.width;
     wizards.forEach((wizard) => {
@@ -41,10 +42,13 @@ function App() {
         clientWidth: canvas.current.clientWidth
       }
     })
-    canvas.current.addEventListener('click', (evt) => clickHandle(evt, coordinates));
-    canvas.current.addEventListener('mousemove', (evt) => mouseMoveHandle(evt, coordinates));
-    canvas.current.addEventListener('mouseleave', (evt) => mouseLeaveHandle(evt, coordinates));
+
+    canvas.current.addEventListener('click', (evt) => clickHandle(evt));
+    canvas.current.addEventListener('mousemove', (evt) => mouseMoveHandle(evt));
+    canvas.current.addEventListener('mouseleave', (evt) => mouseLeaveHandle(evt));
+
     new Duel(canvas.current, wizards).start();
+
   })
   return (
     <main>

@@ -18,6 +18,7 @@ export class Wizard {
     }
     this._isInto = false;
     this._timerId = null;
+    this.ratio = 1;
   }
 
   _addSpell() {
@@ -86,14 +87,15 @@ export class Wizard {
     this._y = this._height - this._r;
   }
 
-  set cursor ({x, y}) {
-    if ((x + y) === 0  || !this._xIsIn(x)) {
+  set cursor ({x, y, width}) {
+    this.ratio = this._width / width;
+    if ((x + y) === 0  || !this._xIsIn(x * this.ratio)) {
       this._cursor.delta = 0;
       this._cursor.position = 0;
       return;
     }
-    this._cursor.position = y;
-    this._cursor.delta = Math.sqrt(this._r ** 2 - (this._x - x) ** 2);
+    this._cursor.position = y * this.ratio;
+    this._cursor.delta = Math.sqrt(this._r ** 2 - (this._x - x * this.ratio) ** 2);
   }
 
   render(context) {
@@ -182,8 +184,9 @@ export class Wizard {
     }
   }
 
-  clickHandle({x, y}) {
-    if(((this._x - x) ** 2 + (this._y - y) ** 2)> this._r ** 2) {
+  clickHandle({x, y, width}) {
+    this.ratio = this._width / width;
+    if(((this._x - (x * this.ratio)) ** 2 + (this._y - (y * this.ratio)) ** 2)> this._r ** 2) {
       return;
     }
     colorist.onClick(this);

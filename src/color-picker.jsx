@@ -5,8 +5,8 @@ export default function ColorPicker() {
   const wizard = useSyncExternalStore(colorist.subscribe, colorist.getRef);
   const input = useRef(null);
   if (wizard) {
-    input.current.style.left = `${wizard.x}px`;
-    input.current.style.top = `${wizard.y}px`;
+    input.current.style.left = `${wizard.x / wizard.ratio}px`;
+    input.current.style.top = `${wizard.y / wizard.ratio}px`;
     input.current.value = wizard.spellColor;
     const left = input.current.getBoundingClientRect().left;
     input.current.click();
